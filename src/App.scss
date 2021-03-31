@@ -1,0 +1,30 @@
+.calendar {
+  width: 700px;
+  border: 1px solid black;
+  &__navigations {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    height: 26px;
+    &__previous-week {
+      align-items: center;
+      svg {
+        height: 26px;
+        width: 26px;
+        display: flex;
+        cursor: pointer;
+      }
+    }
+    &__next-week {
+      align-items: center;
+      svg {
+        height: 26px;
+        width: 26px;
+        display: flex;
+        cursor: pointer;
+
+      }
+    }
+  }
+}
