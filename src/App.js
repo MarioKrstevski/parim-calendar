@@ -19,6 +19,7 @@ function App() {
   const APIDateFormat = "YYYY-MM-DD";
 
   async function getHolidays(neededDates) {
+    console.log("neededDates", neededDates);
     axios
       .all(
         neededDates.map((monthYear) => {
@@ -47,9 +48,9 @@ function App() {
           responses.forEach((resp) => {
             Object.assign(allHolidays, resp.data.holidays);
           });
-          const updatedHolidays = {...holidays, ...allHolidays}
+          const updatedHolidays = { ...holidays, ...allHolidays };
           setHolidays(updatedHolidays);
-          console.log(updatedHolidays)
+          console.log(updatedHolidays);
           setTimelineCoverage([...timelineCoverage, ...neededDates]);
           setNeededDates([]);
         })
@@ -62,10 +63,11 @@ function App() {
     );
     const removedDuplicates = [...new Set(monthYearFormatedDates)];
     const newNeededDates = removedDuplicates.filter(
-      (e) => !timelineCoverage.includes(e)
+      (e) => !timelineCoverage.includes(e) && !neededDates.includes(e)
     );
     // console.log("newNeededDates", newNeededDates);
     // console.log("timelineCoverage ", timelineCoverage);
+
     if (newNeededDates.length) {
       setNeededDates(newNeededDates);
     }

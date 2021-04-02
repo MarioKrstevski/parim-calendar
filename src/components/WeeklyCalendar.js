@@ -71,7 +71,7 @@ const WeeklyCalendar = ({ notifyUpdate, holidays }) => {
             match.map((holiday) => (
               <div
                 key={holiday.name + holiday.type}
-                className={`type-${holiday.type}`}
+                className={`event type-${holiday.type}`}
               >
                 {holiday.name}
               </div>
@@ -103,8 +103,10 @@ const WeeklyCalendar = ({ notifyUpdate, holidays }) => {
           <FiArrowRight onClick={handleSetNextWeek} />
         </div>
       </div>
-      <div className="calendar__header">{renderDaysHeaders()}</div>
-      <div className="calendar__body">{renderDaysContent()}</div>
+      <div className="calendar__content">
+        <div className="calendar__header">{renderDaysHeaders()}</div>
+        <div className="calendar__body">{renderDaysContent()}</div>
+      </div>
     </div>
   );
 };
