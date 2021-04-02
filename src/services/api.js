@@ -7,6 +7,7 @@ const API_URL =
   "https://wozmx9dh26.execute-api.eu-west-1.amazonaws.com/api/holidays";
 
 export default {
+  // recieves an array of months, and fetches data from api for that month (the whole month)
   getHolidays: async function (neededDates) {
     return axios.all(
       neededDates.map((monthYear) => {

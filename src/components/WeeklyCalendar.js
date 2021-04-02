@@ -12,7 +12,7 @@ import {
 import { weekdays } from "../helpers/constants";
 
 const WeeklyCalendar = ({ FetchHolidays, holidays }) => {
-  
+
   const [startDay, setStartDay] = useState("Monday");
   const [weekdaysWithDate, setWeekdaysWithDate] = useState([]);
   const [currentDate, setCurrentDate] = useState(moment());
@@ -28,15 +28,20 @@ const WeeklyCalendar = ({ FetchHolidays, holidays }) => {
     setStartDay(e.target.value);
   }
 
+  // Update what we draw in the UI in start and after interacting with Calendar
   useEffect(() => {
+    // Make a week array that starts with our current day
     const weekDaysShifted = [...weekdays];
     while (weekDaysShifted[0] !== startDay) {
       weekDaysShifted.push(weekDaysShifted.shift());
     }
+
     const currentDateDay = currentDate.format(dayNameFormat);
     const currentDayPostion = weekDaysShifted.findIndex(
       (day) => day === currentDateDay
     );
+
+    // add a moment() date object to each day in the week and store it in state to render the UI by it and also to fetch new dates if needed
     const weekDaysShiftedWithDates = weekDaysShifted.map((day, idx) => ({
       name: day,
       date: moment(currentDate).add(idx - currentDayPostion, "days"),
@@ -44,25 +49,14 @@ const WeeklyCalendar = ({ FetchHolidays, holidays }) => {
     setWeekdaysWithDate(weekDaysShiftedWithDates);
   }, [currentDate, startDay]);
 
-  // initial fetch get all data we need, but maybe this should be skipped
-  useEffect(() => {
-    // const currentDate = moment();
-    // const nextMonth = moment(currentDate).add(30, "days");
-    // const previousMonth = moment(currentDate).add(-30, "days");
-    // const neededDates = [
-    //   currentDate.format(monthYearFormat),
-    //   nextMonth.format(monthYearFormat),
-    //   previousMonth.format(monthYearFormat),
-    // ];
-    // FetchHolidays(neededDates);
-  }, []);
-
+  // Reacts to changes in state, that gets triggered if we click the nav buttons or dropdown
+  // Basically tries to fetch holidays from api for current shown dates in UI
   useEffect(() => {
     if (weekdaysWithDate.length) {
-      const monthYearFormatedDates = [
+      const neededMonths = [
         ...weekdaysWithDate.map((day) => day.date),
       ].map((momentObj) => momentObj.format(monthYearFormat));
-      const removedDuplicates = [...new Set(monthYearFormatedDates)];
+      const removedDuplicates = [...new Set(neededMonths)];
       FetchHolidays(removedDuplicates);
     }
   }, [weekdaysWithDate]);
