@@ -6,7 +6,7 @@ const API_KEY = "f5fb197fb552a47dc301c0a0327cffa6";
 const API_URL =
   "https://wozmx9dh26.execute-api.eu-west-1.amazonaws.com/api/holidays";
 
-export default {
+const api = {
   // recieves an array of months, and fetches data from api for that month (the whole month)
   getHolidays: async function (neededDates) {
     return axios.all(
@@ -32,3 +32,4 @@ export default {
     );
   },
 };
+export default api

@@ -12,7 +12,6 @@ import {
 import { weekdays } from "../helpers/constants";
 
 const WeeklyCalendar = ({ FetchHolidays, holidays }) => {
-
   const [startDay, setStartDay] = useState("Monday");
   const [weekdaysWithDate, setWeekdaysWithDate] = useState([]);
   const [currentDate, setCurrentDate] = useState(moment());
@@ -59,7 +58,7 @@ const WeeklyCalendar = ({ FetchHolidays, holidays }) => {
       const removedDuplicates = [...new Set(neededMonths)];
       FetchHolidays(removedDuplicates);
     }
-  }, [weekdaysWithDate]);
+  }, [weekdaysWithDate, FetchHolidays]);
 
   function renderDaysHeaders() {
     return weekdaysWithDate.map((day, index) => (
