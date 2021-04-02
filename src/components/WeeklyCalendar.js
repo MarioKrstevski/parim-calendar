@@ -1,24 +1,21 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { FetchHolidays } from "../actions/holidaysActions";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import {
+  dayNameFormat,
+  monthYearFormat,
+  dateFormatting,
+  APIDateFormat,
+} from "../helpers/momentDateFormats";
+import { weekdays } from "../helpers/constants";
 
-const WeeklyCalendar = ({ notifyUpdate, holidays }) => {
-  // console.log("HD", holidays)
+const WeeklyCalendar = ({ FetchHolidays, holidays }) => {
+  
   const [startDay, setStartDay] = useState("Monday");
   const [weekdaysWithDate, setWeekdaysWithDate] = useState([]);
   const [currentDate, setCurrentDate] = useState(moment());
-  const APIDateFormat = "YYYY-MM-DD";
-
-  const dateFormatting = "DD.MM.YYYY";
-  const weekdays = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
 
   function handleSetNextWeek() {
     setCurrentDate(moment(currentDate).days(7));
@@ -36,7 +33,7 @@ const WeeklyCalendar = ({ notifyUpdate, holidays }) => {
     while (weekDaysShifted[0] !== startDay) {
       weekDaysShifted.push(weekDaysShifted.shift());
     }
-    const currentDateDay = currentDate.format("dddd");
+    const currentDateDay = currentDate.format(dayNameFormat);
     const currentDayPostion = weekDaysShifted.findIndex(
       (day) => day === currentDateDay
     );
@@ -47,9 +44,26 @@ const WeeklyCalendar = ({ notifyUpdate, holidays }) => {
     setWeekdaysWithDate(weekDaysShiftedWithDates);
   }, [currentDate, startDay]);
 
+  // initial fetch get all data we need, but maybe this should be skipped
+  useEffect(() => {
+    // const currentDate = moment();
+    // const nextMonth = moment(currentDate).add(30, "days");
+    // const previousMonth = moment(currentDate).add(-30, "days");
+    // const neededDates = [
+    //   currentDate.format(monthYearFormat),
+    //   nextMonth.format(monthYearFormat),
+    //   previousMonth.format(monthYearFormat),
+    // ];
+    // FetchHolidays(neededDates);
+  }, []);
+
   useEffect(() => {
     if (weekdaysWithDate.length) {
-      notifyUpdate([...weekdaysWithDate.map((day) => day.date)]);
+      const monthYearFormatedDates = [
+        ...weekdaysWithDate.map((day) => day.date),
+      ].map((momentObj) => momentObj.format(monthYearFormat));
+      const removedDuplicates = [...new Set(monthYearFormatedDates)];
+      FetchHolidays(removedDuplicates);
     }
   }, [weekdaysWithDate]);
 
@@ -111,4 +125,16 @@ const WeeklyCalendar = ({ notifyUpdate, holidays }) => {
   );
 };
 
-export default WeeklyCalendar;
+const mapStateToProps = (state) => {
+  return {
+    holidays: state.holidays,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    FetchHolidays: (neededDates) => dispatch(FetchHolidays(neededDates)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WeeklyCalendar);
