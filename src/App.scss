@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
 :root {
   --main-color: #1a8fff;
   --text-color: black;
@@ -21,8 +23,10 @@ body {
 .calendar {
   max-width: 1200px;
   min-width: 300px;
+  border-radius: 8px;
+  box-shadow:0 25px 50px -12px rgba(0, 0, 0, 0.25);
   width: fit-content;
-  border: 1px solid black;
+  border: 1px solid rgb(146, 146, 146);
   &__navigations {
     padding: 0 6px;
 
@@ -57,20 +61,24 @@ body {
   }
 
   &__header {
+    font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
     display: grid;
     grid-template-columns: repeat(7, minmax(30px, 1fr));
     .weekday {
       display: flex;
+      background-color: #e6e6e6;
       flex-direction: column;
       align-items: center;
       text-align: center;
       border: 1px solid black;
-
+      &__date{
+      }
       border-left: none;
       &:last-child {
         border-right: none;
       }
     }
+  
   }
 
   &__body {
@@ -170,6 +178,7 @@ body {
         border-left: none;
         &:last-child {
           border-right: 1px solid black;
+          border-bottom-left-radius: 8px;
         }
       }
     }
@@ -185,6 +194,7 @@ body {
         border-right: none;
         .event {
           width: fit-content;
+          max-width: unset;
         }
       }
     }

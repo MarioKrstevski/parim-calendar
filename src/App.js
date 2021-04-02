@@ -93,11 +93,7 @@ function App() {
 
   return (
     <div className="App">
-      Hello
-      <WeeklyCalendar
-        holidays={holidays}
-        notifyUpdate={notifyUpdate}
-      ></WeeklyCalendar>
+      <WeeklyCalendar holidays={holidays} notifyUpdate={notifyUpdate} />
     </div>
   );
 }
